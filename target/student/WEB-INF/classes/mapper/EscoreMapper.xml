@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.student.dao.EscoreMapper" >
+  <resultMap id="BaseResultMap" type="com.student.bean.EScore" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="examid" property="examid" jdbcType="INTEGER" />
+    <result column="clazzid" property="clazzid" jdbcType="INTEGER" />
+    <result column="studentid" property="studentid" jdbcType="INTEGER" />
+    <result column="gradeid" property="gradeid" jdbcType="INTEGER" />
+    <result column="courseid" property="courseid" jdbcType="INTEGER" />
+    <result column="score" property="score" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+    id, examid, clazzid, studentid, gradeid, courseid, score
+  </sql>
+
+<select id="getScoreById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  SELECT e.id,e.courseid,e.score FROM student s, escore e WHERE s.id=e.studentid AND e.examid=#{examId} AND e.studentid=#{studentId}
+</select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from escore
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from escore
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.student.bean.EScore" >
+    insert into escore (id, examid, clazzid, 
+      studentid, gradeid, courseid, 
+      score)
+    values (#{id,jdbcType=INTEGER}, #{examid,jdbcType=INTEGER}, #{clazzid,jdbcType=INTEGER}, 
+      #{studentid,jdbcType=INTEGER}, #{gradeid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, 
+      #{score,jdbcType=INTEGER})
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.student.bean.EScore" >
+    update escore
+    <set >
+      <if test="examid != null" >
+        examid = #{examid,jdbcType=INTEGER},
+      </if>
+      <if test="clazzid != null" >
+        clazzid = #{clazzid,jdbcType=INTEGER},
+      </if>
+      <if test="studentid != null" >
+        studentid = #{studentid,jdbcType=INTEGER},
+      </if>
+      <if test="gradeid != null" >
+        gradeid = #{gradeid,jdbcType=INTEGER},
+      </if>
+      <if test="courseid != null" >
+        courseid = #{courseid,jdbcType=INTEGER},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.student.bean.EScore" >
+    update escore
+    set examid = #{examid,jdbcType=INTEGER},
+      clazzid = #{clazzid,jdbcType=INTEGER},
+      studentid = #{studentid,jdbcType=INTEGER},
+      gradeid = #{gradeid,jdbcType=INTEGER},
+      courseid = #{courseid,jdbcType=INTEGER},
+      score = #{score,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateScoreById" parameterType="String" >
+    update escore
+    set
+    <if test="score != null" >
+     score = #{score,jdbcType=INTEGER}
+    </if>
+    WHERE id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

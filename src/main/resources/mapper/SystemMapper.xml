@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.student.dao.SystemMapper" >
+  <resultMap id="BaseResultMap" type="com.student.bean.System" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="schoolName" property="schoolname" jdbcType="VARCHAR" />
+    <result column="forbidTeacher" property="forbidteacher" jdbcType="TINYINT" />
+    <result column="forbidStudent" property="forbidstudent" jdbcType="TINYINT" />
+    <result column="noticeTeacher" property="noticeteacher" jdbcType="VARCHAR" />
+    <result column="noticeStudent" property="noticestudent" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, schoolName, forbidTeacher, forbidStudent, noticeTeacher, noticeStudent
+  </sql>
+
+  <select id="selectAll" resultType="com.student.bean.System">
+    select
+      *
+    from system WHERE id=1
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from system
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from system
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.student.bean.System" >
+    insert into system (id, schoolName, forbidTeacher, 
+      forbidStudent, noticeTeacher, noticeStudent
+      )
+    values (#{id,jdbcType=INTEGER}, #{schoolname,jdbcType=VARCHAR}, #{forbidteacher,jdbcType=TINYINT}, 
+      #{forbidstudent,jdbcType=TINYINT}, #{noticeteacher,jdbcType=VARCHAR}, #{noticestudent,jdbcType=VARCHAR}
+      )
+  </insert>
+
+<update id="editSystem" parameterType="java.lang.String">
+      update system SET
+  <if test="name=='schoolName'" >
+       schoolName = #{value,jdbcType=VARCHAR}
+   </if>
+  <if test="name=='forbidTeacher'" >
+    forbidTeacher = #{value,jdbcType=VARCHAR}
+  </if>
+  <if test="name=='forbidStudent'" >
+    forbidStudent = #{value,jdbcType=VARCHAR}
+  </if>
+  <if test="name=='noticeTeacher'" >
+    noticeTeacher = #{value,jdbcType=VARCHAR}
+  </if>
+  <if test="name=='noticeStudent'" >
+    noticeStudent = #{value,jdbcType=VARCHAR}
+  </if>
+   where id=#{id,jdbcType=INTEGER}
+</update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.student.bean.System" >
+    update system
+    <set >
+      <if test="schoolname != null" >
+        schoolName = #{schoolname,jdbcType=VARCHAR},
+      </if>
+      <if test="forbidteacher != null" >
+        forbidTeacher = #{forbidteacher,jdbcType=TINYINT},
+      </if>
+      <if test="forbidstudent != null" >
+        forbidStudent = #{forbidstudent,jdbcType=TINYINT},
+      </if>
+      <if test="noticeteacher != null" >
+        noticeTeacher = #{noticeteacher,jdbcType=VARCHAR},
+      </if>
+      <if test="noticestudent != null" >
+        noticeStudent = #{noticestudent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.student.bean.System" >
+    update system
+    set schoolName = #{schoolname,jdbcType=VARCHAR},
+      forbidTeacher = #{forbidteacher,jdbcType=TINYINT},
+      forbidStudent = #{forbidstudent,jdbcType=TINYINT},
+      noticeTeacher = #{noticeteacher,jdbcType=VARCHAR},
+      noticeStudent = #{noticestudent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
